@@ -11,6 +11,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
 import gregtech.common.covers.GT_Cover_Fluidfilter;
 import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler_Solar;
+import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineBase;
 import lombok.SneakyThrows;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaRegistrar;
@@ -41,6 +42,7 @@ public class PluginGregtech5U extends PluginBase
         addConfig("machineFacing");
         addConfig("transformer");
         addConfig("solar");
+        addConfig("LDP");
         addConfig("basicmachine");
         addConfig("multiblock");
         addConfig("fluidFilter");
@@ -65,6 +67,7 @@ public class PluginGregtech5U extends PluginBase
         final GT_MetaTileEntity_MultiBlockBase multiBlockBase = tMeta instanceof GT_MetaTileEntity_MultiBlockBase ? ((GT_MetaTileEntity_MultiBlockBase) tMeta) : null;
 
         final boolean showTransformer = tMeta instanceof GT_MetaTileEntity_Transformer && getConfig("transformer");
+        final boolean showLDP = tMeta instanceof GT_MetaTileEntity_LongDistancePipelineBase && getConfig("LDP");
         final boolean showSolar = tMeta instanceof GT_MetaTileEntity_Boiler_Solar && getConfig("solar");
         final boolean allowedToWork = tag.hasKey("isAllowedToWork") && tag.getBoolean("isAllowedToWork");
 
@@ -102,6 +105,13 @@ public class PluginGregtech5U extends PluginBase
                     } else {
                         currenttip.add(String.format(BLUE + "Output:" + RESET + " %d(%dA)", tag.getLong("maxEUOutput"), tag.getLong("maxAmperesOut")));
                     }
+                } else if (showLDP) {
+                    if(side == facing)
+                        currenttip.add(GOLD + "Pipeline Input" + RESET);
+                    else if (side == ForgeDirection.OPPOSITES[facing])
+                        currenttip.add(BLUE + "Pipeline Output" + RESET);
+                    else
+                        currenttip.add("Pipeline Side");
                 } else {
                     currenttip.add(String.format("%s: %s", facingStr, ForgeDirection.getOrientation(facing).name()));
                 }
@@ -147,7 +157,7 @@ public class PluginGregtech5U extends PluginBase
                 final GT_MetaTileEntity_Boiler_Solar solar = (GT_MetaTileEntity_Boiler_Solar)tMeta;
                 tag.setInteger("calcificationOutput", (solar.getProductionPerSecond()));
                 tag.setInteger("maxCalcificationOutput", (solar.getMaxOutputPerSecond()));
-            }
+            } 
 
             if (BasicMachine != null) {
                 final int progressSingleBlock = BasicMachine.mProgresstime/20;
