@@ -49,7 +49,6 @@ import forestry.arboriculture.genetics.Tree;
 import forestry.arboriculture.tiles.TileLeaves;
 import forestry.arboriculture.tiles.TileTreeContainer;
 import forestry.core.access.IOwnable;
-import forestry.core.config.ForestryItem;
 import forestry.core.proxy.Proxies;
 import forestry.core.tiles.TileEngine;
 import forestry.core.tiles.TileForestry;
@@ -248,8 +247,8 @@ public class PluginForestry extends PluginBase
 
     private String getNameForBeeType(ItemStack bee)
     {
-        return ForestryItem.beeDroneGE.isItemEqual(bee.getItem()) ? lang.localize("drone")
-                : ForestryItem.beePrincessGE.isItemEqual(bee.getItem()) ? lang.localize("princess") : lang.localize("queen");
+        return PluginApiculture.items.beeDroneGE == bee.getItem() ? lang.localize("drone")
+                : PluginApiculture.items.beePrincessGE == bee.getItem() ? lang.localize("princess") : lang.localize("queen");
     }
 
     private void addIndentedBeeInfo(IBee bee, List<String> currenttip)
@@ -324,7 +323,7 @@ public class PluginForestry extends PluginBase
                 }
                 tag.setIntArray(ERRORS, ArrayUtils.toPrimitive(ids.toArray(new Integer[0])));
 
-                if (queen != null && ForestryItem.beeQueenGE.isItemEqual(queen.getItem()))
+                if (queen != null && PluginApiculture.items.beeQueenGE == queen.getItem())
                 {
                     Bee queenBee = new Bee(queen.getTagCompound());
                     float throttle = _throttle.getInt(logic);
