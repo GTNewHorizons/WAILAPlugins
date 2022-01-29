@@ -38,14 +38,6 @@ public class PluginGregtech5U extends PluginBase
     public void load(IWailaRegistrar registrar)
     {
         super.load(registrar);
-
-        addConfig("machineFacing");
-        addConfig("transformer");
-        addConfig("solar");
-        addConfig("LDP");
-        addConfig("basicmachine");
-        addConfig("multiblock");
-        addConfig("fluidFilter");
         registerBody(BaseTileEntity.class);
         registerNBT(BaseTileEntity.class);
     }
