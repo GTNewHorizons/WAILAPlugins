@@ -19,4 +19,8 @@ repositories {
     maven {
         url = "https://jitpack.io"
     }
+    maven {
+        name = "FalsePattern GTMEGA Maven"
+        url = "https://gtmega.falsepattern.com/releases/"
+    }
 }
