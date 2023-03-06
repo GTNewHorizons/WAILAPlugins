@@ -59,6 +59,8 @@ final class WaterTankRateCalculator {
 
     private static final float RAIN_RATE = 3.0F;
 
+    private static final float RATE_TICK_RATIO = 0.125F;
+
     private World world;
     private int x;
     private int y;
@@ -77,6 +79,10 @@ final class WaterTankRateCalculator {
         x = multiBlock.getMasterBlock().xCoord;
         y = multiBlock.getMasterBlock().yCoord;
         z = multiBlock.getMasterBlock().zCoord;
+    }
+
+    public static float convertRateToLitersPerSecond(float rate) {
+        return rate * RATE_TICK_RATIO * 20;
     }
 
     public WaterTankRateCalculator init() {
@@ -199,7 +205,8 @@ public class PluginRailcraft extends PluginBase implements IWailaEntityProvider 
         if (tile instanceof TileTankWater && ((TileTankWater) tile).isStructureValid() && getConfig("waterTankRate")) {
             WaterTankRateCalculator waterTankRateCalculator = new WaterTankRateCalculator((TileMultiBlock) tile).init();
             float rate = waterTankRateCalculator.getRate();
-            currenttip.add(lang.localize("currentRate", rate, rate / 8 * 20));
+            currenttip.add(
+                    lang.localize("currentRate", rate, WaterTankRateCalculator.convertRateToLitersPerSecond(rate)));
             currenttip.add(lang.localize("biomeHumidityRate", waterTankRateCalculator.getHumidityRate()));
 
             float snowingOrRainingRate = waterTankRateCalculator.getSnowingOrRainingRate();
