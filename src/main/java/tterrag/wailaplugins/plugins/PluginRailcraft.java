@@ -50,14 +50,14 @@ import com.enderio.core.common.util.ItemUtil;
 
 final class WaterTankRateCalculator {
 
-    private static final float ONE = 1.0F;
+    private final float ONE = 1.0F;
 
-    private static final float BASE_HUMIDITY_RATE = 10F;
+    private final float BASE_HUMIDITY_RATE = 10F;
 
-    private static final float OUTSIDE_RATE = 0.5F;
-    private static final float SNOW_RATE = 0.5F;
+    private final float OUTSIDE_RATE = 0.5F;
+    private final float SNOW_RATE = 0.5F;
 
-    private static final float RAIN_RATE = 3.0F;
+    private final float RAIN_RATE = 3.0F;
 
     private static final float RATE_TICK_RATIO = 0.125F;
 
