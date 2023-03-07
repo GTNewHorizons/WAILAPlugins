@@ -75,7 +75,7 @@ final class WaterTankRateCalculator {
     private float snowingOrRainingRate;
 
     WaterTankRateCalculator(TileMultiBlock multiBlock) {
-        this.world = multiBlock.getWorld();
+        world = multiBlock.getWorld();
         x = multiBlock.getMasterBlock().xCoord;
         y = multiBlock.getMasterBlock().yCoord;
         z = multiBlock.getMasterBlock().zCoord;
