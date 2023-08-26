@@ -7,11 +7,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import lombok.SneakyThrows;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import mcp.mobius.waila.api.IWailaRegistrar;
-import mcp.mobius.waila.api.SpecialChars;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -23,16 +18,16 @@ import net.minecraft.world.World;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import tterrag.wailaplugins.api.Plugin;
-
 import com.enderio.core.common.Lang;
 import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 
+import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.apiculture.IBee;
+import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeHousing;
 import forestry.api.apiculture.IBeeHousingInventory;
 import forestry.api.apiculture.IBeekeepingLogic;
@@ -55,6 +50,11 @@ import forestry.core.tiles.TileEngine;
 import forestry.core.tiles.TileForestry;
 import forestry.core.utils.StringUtil;
 import forestry.plugins.PluginApiculture;
+import lombok.SneakyThrows;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaRegistrar;
+import mcp.mobius.waila.api.SpecialChars;
+import tterrag.wailaplugins.api.Plugin;
 
 @Plugin(name = "Forestry", deps = "Forestry")
 public class PluginForestry extends PluginBase {
@@ -128,6 +128,7 @@ public class PluginForestry extends PluginBase {
         }
 
         if (tile instanceof IBeeHousing && getConfig("apiary")) {
+            IBeeHousing housing = (IBeeHousing) tile;
             ItemStack queenstack = null;
             ItemStack dronestack = null;
             if (tag.hasKey(QUEEN_STACK)) {
@@ -141,7 +142,8 @@ public class PluginForestry extends PluginBase {
 
             if (queenstack != null) {
                 queen = new Bee(queenstack.getTagCompound());
-                String queenSpecies = getSpeciesName(queen.getGenome(), true);
+                IBeeGenome genome = queen.getGenome();
+                String queenSpecies = getSpeciesName(genome, true);
 
                 currenttip.add(
                         EnumChatFormatting.WHITE + lang.localize(
@@ -151,6 +153,15 @@ public class PluginForestry extends PluginBase {
                 if (queen.isAnalyzed()) {
                     addIndentedBeeInfo(queen, currenttip);
                 }
+
+                float prodMod = BeeManager.beeRoot.createBeeHousingModifier(housing).getProductionModifier(genome, 0f);
+                prodMod += BeeManager.beeRoot.getBeekeepingMode(housing.getWorld()).getBeeModifier()
+                        .getProductionModifier(genome, prodMod);
+                float dummyProd = 100f * Bee.getFinalChance(0.01f, genome.getSpeed(), prodMod, 1f);
+                currenttip.add(
+                        EnumChatFormatting.WHITE + lang.localize(
+                                "effectiveProductionMul",
+                                EnumChatFormatting.AQUA + String.format("b^0.52 * %.3f", dummyProd)));
             }
 
             IBee drone = null;

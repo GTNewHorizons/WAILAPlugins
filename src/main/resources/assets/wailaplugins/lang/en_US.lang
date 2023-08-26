@@ -47,6 +47,8 @@ wp.hud.msg.secondarybee=Breeding %s: %s
 wp.hud.msg.breedProgress=Work Progress: %s
 wp.hud.msg.breedError=Error: %s
 
+wp.hud.msg.effectiveProductionMul=Effective Production: %s
+
 wp.hud.msg.queen=Queen
 wp.hud.msg.princess=Princess
 wp.hud.msg.drone=Drone
