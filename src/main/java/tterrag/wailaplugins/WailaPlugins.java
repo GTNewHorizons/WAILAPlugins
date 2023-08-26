@@ -5,10 +5,6 @@ import static tterrag.wailaplugins.WailaPlugins.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import tterrag.wailaplugins.config.WPConfigHandler;
-import tterrag.wailaplugins.plugins.PluginRegistrar;
-import tterrag.wailaplugins.proxy.CommonProxy;
-
 import com.enderio.core.IEnderMod;
 import com.enderio.core.common.Lang;
 
@@ -17,6 +13,9 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import tterrag.wailaplugins.config.WPConfigHandler;
+import tterrag.wailaplugins.plugins.PluginRegistrar;
+import tterrag.wailaplugins.proxy.CommonProxy;
 
 @Mod(
         modid = MODID,

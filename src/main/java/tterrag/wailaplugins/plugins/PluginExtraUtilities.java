@@ -2,9 +2,6 @@ package tterrag.wailaplugins.plugins;
 
 import java.util.List;
 
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import mcp.mobius.waila.api.IWailaRegistrar;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -12,10 +9,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-import tterrag.wailaplugins.api.Plugin;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.rwtema.extrautils.tileentity.TileEntityDrum;
+
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaRegistrar;
+import tterrag.wailaplugins.api.Plugin;
 
 @Plugin(deps = "ExtraUtilities")
 public class PluginExtraUtilities extends PluginBase {

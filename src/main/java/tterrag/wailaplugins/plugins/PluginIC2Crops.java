@@ -6,23 +6,21 @@ import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 import java.util.List;
 
-import lombok.SneakyThrows;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import mcp.mobius.waila.api.IWailaRegistrar;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-import tterrag.wailaplugins.api.Plugin;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import ic2.api.crops.CropCard;
 import ic2.api.crops.ICropTile;
 import ic2.core.crop.TileEntityCrop;
+import lombok.SneakyThrows;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaRegistrar;
+import tterrag.wailaplugins.api.Plugin;
 
 @Plugin(name = "IC2Crops", deps = "IC2")
 public class PluginIC2Crops extends PluginBase {

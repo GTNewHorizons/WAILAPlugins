@@ -2,10 +2,6 @@ package tterrag.wailaplugins.plugins;
 
 import java.util.List;
 
-import mcp.mobius.waila.api.ITaggedList;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import mcp.mobius.waila.api.IWailaRegistrar;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -17,9 +13,12 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import tterrag.wailaplugins.api.Plugin;
-
 import com.enderio.core.common.util.BlockCoord;
+
+import mcp.mobius.waila.api.ITaggedList;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaRegistrar;
+import tterrag.wailaplugins.api.Plugin;
 
 @Plugin(name = "IFluidHandler")
 public class PluginIFluidHandler extends PluginBase {

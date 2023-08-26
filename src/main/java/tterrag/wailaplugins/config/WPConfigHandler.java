@@ -2,13 +2,13 @@ package tterrag.wailaplugins.config;
 
 import net.minecraftforge.common.config.Property;
 
-import tterrag.wailaplugins.WailaPlugins;
-
 import com.enderio.core.common.config.AbstractConfigHandler;
 import com.enderio.core.common.config.ConfigProcessor;
 import com.enderio.core.common.config.annot.Comment;
 import com.enderio.core.common.config.annot.Config;
 import com.enderio.core.common.config.annot.Range;
+
+import tterrag.wailaplugins.WailaPlugins;
 
 public class WPConfigHandler extends AbstractConfigHandler {
 

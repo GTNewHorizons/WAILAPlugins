@@ -3,11 +3,6 @@ package tterrag.wailaplugins.plugins;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import lombok.SneakyThrows;
-import mcp.mobius.waila.api.ITaggedList;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import mcp.mobius.waila.api.IWailaRegistrar;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,8 +10,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import tterrag.wailaplugins.api.Plugin;
-import tterrag.wailaplugins.config.WPConfigHandler;
+import com.enderio.core.common.util.BlockCoord;
+
 import WayofTime.alchemicalWizardry.ModItems;
 import WayofTime.alchemicalWizardry.api.rituals.Rituals;
 import WayofTime.alchemicalWizardry.common.items.armour.BoundArmour;
@@ -24,9 +19,13 @@ import WayofTime.alchemicalWizardry.common.tileEntity.TEAltar;
 import WayofTime.alchemicalWizardry.common.tileEntity.TEMasterStone;
 import WayofTime.alchemicalWizardry.common.tileEntity.TETeleposer;
 import WayofTime.alchemicalWizardry.common.tileEntity.TEWritingTable;
-
-import com.enderio.core.common.util.BlockCoord;
 import cpw.mods.fml.relauncher.ReflectionHelper;
+import lombok.SneakyThrows;
+import mcp.mobius.waila.api.ITaggedList;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaRegistrar;
+import tterrag.wailaplugins.api.Plugin;
+import tterrag.wailaplugins.config.WPConfigHandler;
 
 /**
  * @author Pokefenn (edits by tterrag)

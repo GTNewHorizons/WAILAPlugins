@@ -2,15 +2,14 @@ package tterrag.wailaplugins.plugins;
 
 import java.util.List;
 
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import mcp.mobius.waila.api.IWailaRegistrar;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import tterrag.wailaplugins.api.Plugin;
-
 import com.pam.harvestcraft.BlockPamFruit;
+
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaRegistrar;
+import tterrag.wailaplugins.api.Plugin;
 
 @Plugin(name = "Pam's Fruit", deps = "harvestcraft")
 public class PluginHarvestcraft extends PluginBase {

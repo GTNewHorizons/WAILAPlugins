@@ -5,6 +5,14 @@ import static net.minecraftforge.common.util.ForgeDirection.*;
 import java.text.NumberFormat;
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import mcp.mobius.waila.api.IWailaBlockDecorator;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -21,16 +29,7 @@ import mods.immibis.redlogic.gates.types.GateTimer;
 import mods.immibis.redlogic.wires.EnumWireType;
 import mods.immibis.redlogic.wires.RedAlloyTile;
 import mods.immibis.redlogic.wires.WireTile;
-
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import tterrag.wailaplugins.api.Plugin;
-
-import com.enderio.core.common.util.BlockCoord;
 
 /**
  * @author ProfMobius, ported and adapted to RedLogic by tterrag

@@ -2,24 +2,23 @@ package tterrag.wailaplugins.plugins;
 
 import java.util.List;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import mcp.mobius.waila.api.IWailaEntityProvider;
-import mcp.mobius.waila.api.IWailaRegistrar;
-import mcp.mobius.waila.api.impl.ConfigHandler;
-
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import com.enderio.core.common.Lang;
+import com.enderio.core.common.util.BlockCoord;
+
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaEntityProvider;
+import mcp.mobius.waila.api.IWailaRegistrar;
+import mcp.mobius.waila.api.impl.ConfigHandler;
 import tterrag.wailaplugins.WailaPlugins;
 import tterrag.wailaplugins.api.IPlugin;
 import tterrag.wailaplugins.api.Plugin;
-
-import com.enderio.core.common.Lang;
-import com.enderio.core.common.util.BlockCoord;
 
 public abstract class PluginBase implements IPlugin {
 
