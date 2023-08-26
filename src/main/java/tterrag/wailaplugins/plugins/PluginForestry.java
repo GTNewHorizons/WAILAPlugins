@@ -51,12 +51,13 @@ import forestry.core.tiles.TileForestry;
 import forestry.core.utils.StringUtil;
 import forestry.plugins.PluginApiculture;
 import lombok.SneakyThrows;
+import magicbees.tileentity.TileEntityMagicApiary;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaRegistrar;
 import mcp.mobius.waila.api.SpecialChars;
 import tterrag.wailaplugins.api.Plugin;
 
-@Plugin(name = "Forestry", deps = "Forestry")
+@Plugin(name = "Forestry", deps = { "Forestry", "MagicBees" })
 public class PluginForestry extends PluginBase {
 
     private static Field _throttle;
@@ -85,9 +86,9 @@ public class PluginForestry extends PluginBase {
     public void load(IWailaRegistrar registrar) {
         super.load(registrar);
 
-        registerBody(TileForestry.class, TileTreeContainer.class, TileAlveary.class);
+        registerBody(TileForestry.class, TileTreeContainer.class, TileAlveary.class, TileEntityMagicApiary.class);
 
-        registerNBT(TileForestry.class, TileTreeContainer.class, TileAlveary.class);
+        registerNBT(TileForestry.class, TileTreeContainer.class, TileAlveary.class, TileEntityMagicApiary.class);
 
         addConfig("power");
         addConfig("heat");

@@ -12,6 +12,9 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:ForestryMC:4.6.14:dev") {
         transitive = false
     }
+    compileOnly("com.github.GTNewHorizons:MagicBees:2.6.6-GTNH:dev") {
+        transitive = false
+    }
     compileOnly("com.github.GTNewHorizons:StructureLib:1.2.8:dev") {
         transitive = false
     }
