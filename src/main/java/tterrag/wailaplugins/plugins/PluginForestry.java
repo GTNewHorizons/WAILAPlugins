@@ -143,8 +143,7 @@ public class PluginForestry extends PluginBase {
 
             if (queenstack != null) {
                 queen = new Bee(queenstack.getTagCompound());
-                IBeeGenome genome = queen.getGenome();
-                String queenSpecies = getSpeciesName(genome, true);
+                String queenSpecies = getSpeciesName(queen.getGenome(), true);
 
                 currenttip.add(
                         EnumChatFormatting.WHITE + lang.localize(
@@ -154,15 +153,6 @@ public class PluginForestry extends PluginBase {
                 if (queen.isAnalyzed()) {
                     addIndentedBeeInfo(queen, currenttip);
                 }
-
-                float prodMod = BeeManager.beeRoot.createBeeHousingModifier(housing).getProductionModifier(genome, 0f);
-                prodMod += BeeManager.beeRoot.getBeekeepingMode(housing.getWorld()).getBeeModifier()
-                        .getProductionModifier(genome, prodMod);
-                float dummyProd = 100f * Bee.getFinalChance(0.01f, genome.getSpeed(), prodMod, 1f);
-                currenttip.add(
-                        EnumChatFormatting.WHITE + lang.localize(
-                                "effectiveProductionMul",
-                                EnumChatFormatting.AQUA + String.format("b^0.52 * %.3f", dummyProd)));
             }
 
             IBee drone = null;
@@ -183,6 +173,14 @@ public class PluginForestry extends PluginBase {
                 if (drone.isAnalyzed()) {
                     addIndentedBeeInfo(drone, currenttip);
                 }
+            }
+
+            if (tag.hasKey(DUMMY_PRODUCTION)) {
+                currenttip.add(
+                        EnumChatFormatting.WHITE + lang.localize(
+                                "effectiveProductionMul",
+                                EnumChatFormatting.AQUA
+                                        + String.format("b^0.52 * %.3f", tag.getFloat(DUMMY_PRODUCTION))));
             }
 
             if (tag.hasKey(ERRORS) || tag.hasKey(BREED_PROGRESS)) {
@@ -258,6 +256,7 @@ public class PluginForestry extends PluginBase {
     public static final String LEAF_BRED_SPECIES = "leafBredSpecies";
     public static final String QUEEN_STACK = "queenStack";
     public static final String DRONE_STACK = "droneStack";
+    public static final String DUMMY_PRODUCTION = "dummyProduction";
     public static final String ERRORS = "errors";
     public static final String BREED_PROGRESS = "breedProgress";
     public static final String TREE = "treeData";
@@ -314,6 +313,15 @@ public class PluginForestry extends PluginBase {
                     float progress = step * (throttle / PluginApiculture.ticksPerBeeWorkCycle);
 
                     tag.setDouble(BREED_PROGRESS, (age / maxAge) + progress);
+
+                    IBeeGenome genome = queenBee.getGenome();
+                    float prodMod = BeeManager.beeRoot.createBeeHousingModifier(housing)
+                            .getProductionModifier(genome, 0f);
+                    prodMod += BeeManager.beeRoot.getBeekeepingMode(housing.getWorld()).getBeeModifier()
+                            .getProductionModifier(genome, prodMod);
+                    float dummyProd = 100f * Bee.getFinalChance(0.01f, genome.getSpeed(), prodMod, 1f);
+
+                    tag.setFloat(DUMMY_PRODUCTION, dummyProd);
                 }
             }
         }
