@@ -107,9 +107,7 @@ public class PluginForestry extends PluginBase {
     @SneakyThrows
     @SuppressWarnings("unused")
     protected void getBody(ItemStack stack, List<String> currenttip, IWailaDataAccessor accessor) {
-        Block block = accessor.getBlock();
         TileEntity tile = accessor.getTileEntity();
-        World world = accessor.getWorld();
         EntityPlayer player = accessor.getPlayer();
         MovingObjectPosition pos = accessor.getPosition();
         NBTTagCompound tag = accessor.getNBTData();
@@ -135,7 +133,6 @@ public class PluginForestry extends PluginBase {
         }
 
         if (tile instanceof IBeeHousing && getConfig("apiary")) {
-            IBeeHousing housing = (IBeeHousing) tile;
             ItemStack queenstack = null;
             ItemStack dronestack = null;
             if (tag.hasKey(QUEEN_STACK)) {
