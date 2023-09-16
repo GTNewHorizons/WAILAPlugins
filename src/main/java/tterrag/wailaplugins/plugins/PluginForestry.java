@@ -24,6 +24,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 
+import cpw.mods.fml.common.Loader;
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.apiculture.IBee;
@@ -57,7 +58,7 @@ import mcp.mobius.waila.api.IWailaRegistrar;
 import mcp.mobius.waila.api.SpecialChars;
 import tterrag.wailaplugins.api.Plugin;
 
-@Plugin(name = "Forestry", deps = { "Forestry", "MagicBees" })
+@Plugin(name = "Forestry", deps = { "Forestry" })
 public class PluginForestry extends PluginBase {
 
     private static Field _throttle;
@@ -86,9 +87,14 @@ public class PluginForestry extends PluginBase {
     public void load(IWailaRegistrar registrar) {
         super.load(registrar);
 
-        registerBody(TileForestry.class, TileTreeContainer.class, TileAlveary.class, TileEntityMagicApiary.class);
+        registerBody(TileForestry.class, TileTreeContainer.class, TileAlveary.class);
 
-        registerNBT(TileForestry.class, TileTreeContainer.class, TileAlveary.class, TileEntityMagicApiary.class);
+        registerNBT(TileForestry.class, TileTreeContainer.class, TileAlveary.class);
+
+        if (Loader.isModLoaded("MagicBees")) {
+            registerBody(TileEntityMagicApiary.class);
+            registerNBT(TileEntityMagicApiary.class);
+        }
 
         addConfig("power");
         addConfig("heat");
