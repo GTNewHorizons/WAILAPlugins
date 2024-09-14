@@ -205,6 +205,14 @@ public class PluginForestry extends PluginBase {
                                     EnumChatFormatting.AQUA + pctFmt.format(tag.getDouble(BREED_PROGRESS))));
                 }
             }
+
+            if (tag.hasKey(IS_JUBILANT)) {
+                if (tag.getBoolean(IS_JUBILANT)) {
+                    currenttip.add(EnumChatFormatting.AQUA + lang.localize("isJubilant"));
+                } else {
+                    currenttip.add(EnumChatFormatting.RED + lang.localize("isNotJubilant"));
+                }
+            }
         }
     }
 
@@ -295,7 +303,8 @@ public class PluginForestry extends PluginBase {
             for (Map.Entry<Float, ItemStack[]> ent : productsByYield.descendingMap().entrySet()) {
                 String name = ent.getValue()[0].getDisplayName();
                 boolean isDup = ent.getValue().length > 1;
-                String namePart = name + (isDup ? "... : " : ": ");
+                String namePart = name + (isDup ? ", ... : " : ": ");
+                // items / bee tick * 60 seconds / minute * 60 minutes / hour / (27.5 seconds / bee tick) = items / hour
                 String yieldPart = String.format("%.3f ", ent.getKey() * 60 * 60 / 27.5)
                         + lang.localize("yieldPerHour");
                 currenttip.add(SpecialChars.TAB + namePart + yieldPart);
@@ -308,6 +317,7 @@ public class PluginForestry extends PluginBase {
     public static final String DRONE_STACK = "droneStack";
     public static final String PROD_MOD = "dummyProduction";
     public static final String ERRORS = "errors";
+    public static final String IS_JUBILANT = "isJubilant";
     public static final String BREED_PROGRESS = "breedProgress";
     public static final String TREE = "treeData";
     public static final String ENERGY_STORED = "rfStored";
@@ -371,6 +381,11 @@ public class PluginForestry extends PluginBase {
                             .getProductionModifier(genome, prodMod);
 
                     tag.setFloat(PROD_MOD, prodMod);
+
+                    tag.setBoolean(
+                            IS_JUBILANT,
+                            genome.getPrimary().isJubilant(genome, housing)
+                                    && genome.getSecondary().isJubilant(genome, housing));
                 }
             }
         }
