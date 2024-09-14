@@ -48,6 +48,7 @@ wp.hud.msg.breedProgress=Work Progress: %s
 wp.hud.msg.breedError=Error: %s
 
 wp.hud.msg.effectiveProductionMul=Effective Production: %s
+wp.hud.msg.revealYield=Hold Shift to see expected yields
 wp.hud.msg.yieldPerHour=per hour
 
 wp.hud.msg.queen=Queen

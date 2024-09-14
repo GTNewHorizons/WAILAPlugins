@@ -13,7 +13,6 @@ import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
@@ -181,18 +180,8 @@ public class PluginForestry extends PluginBase {
                 }
             }
 
-            if (tag.hasKey(DUMMY_PRODUCTION)) {
-                EnumChatFormatting color = (tag.hasKey(IS_OVERWORKED) && !tag.getBoolean(IS_OVERWORKED))
-                        ? EnumChatFormatting.AQUA
-                        : EnumChatFormatting.RED;
-                currenttip.add(
-                        EnumChatFormatting.WHITE + lang.localize(
-                                "effectiveProductionMul",
-                                color + String.format("b^0.52 * %.3f", tag.getFloat(DUMMY_PRODUCTION))));
-            }
-
-            if (tag.hasKey(BEE_YIELD)) {
-                addBeeYieldInfo(tag.getTagList(BEE_YIELD, 10), currenttip);
+            if (tag.hasKey(PROD_MOD) && queen != null) {
+                addBeeYieldInfo(queen.getGenome(), tag.getFloat(PROD_MOD), currenttip);
             }
 
             if (tag.hasKey(ERRORS) || tag.hasKey(BREED_PROGRESS)) {
@@ -276,17 +265,38 @@ public class PluginForestry extends PluginBase {
         }
     }
 
-    private void addBeeYieldInfo(NBTTagList tagList, List<String> currenttip) {
-        if (Proxies.common.isShiftDown()) {
-            for (int i = 0; i < tagList.tagCount(); ++i) {
-                NBTTagCompound entTag = tagList.getCompoundTagAt(i);
-                String namePart = lang.localize(entTag.getString("name"));
-                if (entTag.getBoolean("dup")) {
-                    namePart += "... : ";
-                } else {
-                    namePart += ": ";
+    private void addBeeYieldInfo(IBeeGenome genome, float prodMod, List<String> currenttip) {
+        EnumChatFormatting color = prodMod > 16f ? EnumChatFormatting.RED : EnumChatFormatting.AQUA;
+        float speed = genome.getSpeed();
+        float dummyProd = 100f * Math.min(Bee.getFinalChance(0.01f, speed, prodMod, 1f), 1f);
+        currenttip.add(
+                EnumChatFormatting.WHITE
+                        + lang.localize("effectiveProductionMul", color + String.format("b^0.52 * %.3f", dummyProd)));
+
+        if (!Proxies.common.isShiftDown()) {
+            currenttip.add(EnumChatFormatting.ITALIC + "<" + lang.localize("revealYield") + ">");
+        } else {
+            // create a summary of the average yields for all outputs with different average yields
+            Map<ItemStack, Float> yields = new HashMap<>();
+            extendBeeYieldMap(yields, genome.getPrimary().getProductChances(), false, speed, prodMod, 1f);
+            extendBeeYieldMap(yields, genome.getSecondary().getProductChances(), true, speed, prodMod, 1f);
+            extendBeeYieldMap(yields, genome.getPrimary().getSpecialtyChances(), false, speed, prodMod, 1f);
+            TreeMap<Float, ItemStack[]> productsByYield = new TreeMap<>();
+            for (Map.Entry<ItemStack, Float> product : yields.entrySet()) {
+                float chance = product.getValue();
+                ItemStack item = product.getKey();
+                if (productsByYield.computeIfPresent(
+                        chance,
+                        (_chance, items) -> items.length > 1 ? items : new ItemStack[] { items[0], item }) == null) {
+                    productsByYield.put(chance, new ItemStack[] { item });
                 }
-                String yieldPart = String.format("%.3f ", entTag.getFloat("yield") * 60 * 60 / 27.5)
+            }
+
+            for (Map.Entry<Float, ItemStack[]> ent : productsByYield.descendingMap().entrySet()) {
+                String name = ent.getValue()[0].getDisplayName();
+                boolean isDup = ent.getValue().length > 1;
+                String namePart = name + (isDup ? "... : " : ": ");
+                String yieldPart = String.format("%.3f ", ent.getKey() * 60 * 60 / 27.5)
                         + lang.localize("yieldPerHour");
                 currenttip.add(SpecialChars.TAB + namePart + yieldPart);
             }
@@ -296,9 +306,7 @@ public class PluginForestry extends PluginBase {
     public static final String LEAF_BRED_SPECIES = "leafBredSpecies";
     public static final String QUEEN_STACK = "queenStack";
     public static final String DRONE_STACK = "droneStack";
-    public static final String DUMMY_PRODUCTION = "dummyProduction";
-    public static final String IS_OVERWORKED = "isOverworked";
-    public static final String BEE_YIELD = "beeYield";
+    public static final String PROD_MOD = "dummyProduction";
     public static final String ERRORS = "errors";
     public static final String BREED_PROGRESS = "breedProgress";
     public static final String TREE = "treeData";
@@ -361,41 +369,8 @@ public class PluginForestry extends PluginBase {
                             .getProductionModifier(genome, 0f);
                     prodMod += BeeManager.beeRoot.getBeekeepingMode(housing.getWorld()).getBeeModifier()
                             .getProductionModifier(genome, prodMod);
-                    float speed = genome.getSpeed();
-                    float dummyProd = 100f * Math.min(Bee.getFinalChance(0.01f, speed, prodMod, 1f), 1f);
 
-                    tag.setFloat(DUMMY_PRODUCTION, dummyProd);
-                    tag.setBoolean(IS_OVERWORKED, prodMod > 16f);
-
-                    // create a summary of the average yields for all outputs with different average yields
-                    Map<ItemStack, Float> yields = new HashMap<>();
-                    extendBeeYieldMap(yields, genome.getPrimary().getProductChances(), false, speed, prodMod, 1f);
-                    extendBeeYieldMap(yields, genome.getSecondary().getProductChances(), true, speed, prodMod, 1f);
-                    extendBeeYieldMap(yields, genome.getPrimary().getSpecialtyChances(), false, speed, prodMod, 1f);
-                    TreeMap<Float, ItemStack[]> productsByYield = new TreeMap<>();
-                    for (Map.Entry<ItemStack, Float> product : yields.entrySet()) {
-                        float chance = product.getValue();
-                        ItemStack item = product.getKey();
-                        if (productsByYield.computeIfPresent(
-                                chance,
-                                (_chance, items) -> items.length > 1 ? items : new ItemStack[] { items[0], item })
-                                == null) {
-                            productsByYield.put(chance, new ItemStack[] { item });
-                        }
-                    }
-
-                    NBTTagList tagList = new NBTTagList();
-                    for (Map.Entry<Float, ItemStack[]> ent : productsByYield.descendingMap().entrySet()) {
-                        String name = ent.getValue()[0].getUnlocalizedName();
-                        boolean isDup = ent.getValue().length > 1;
-                        NBTTagCompound entTag = new NBTTagCompound();
-                        entTag.setString("name", name);
-                        entTag.setBoolean("dup", isDup);
-                        entTag.setFloat("yield", ent.getKey());
-                        tagList.appendTag(entTag);
-                    }
-
-                    tag.setTag(BEE_YIELD, tagList);
+                    tag.setFloat(PROD_MOD, prodMod);
                 }
             }
         }
