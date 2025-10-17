@@ -15,9 +15,9 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import com.enderio.core.common.util.BlockCoord;
 
-import mcp.mobius.waila.api.ITaggedList;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaRegistrar;
+import mcp.mobius.waila.api.SpecialChars;
 import tterrag.wailaplugins.api.Plugin;
 
 @Plugin(name = "IFluidHandler")
@@ -41,9 +41,13 @@ public class PluginIFluidHandler extends PluginBase {
     public static void addTankTooltip(List<String> currenttip, FluidTankInfo... tanks) {
         for (FluidTankInfo tank : tanks) {
             if (tank != null && tank.fluid != null) {
-                ((ITaggedList<String, String>) currenttip).add(
-                        tank.fluid.amount + " / " + tank.capacity + " mB " + tank.fluid.getLocalizedName(),
-                        "IFluidHandler");
+                currenttip.add(
+                        SpecialChars.getRenderString(
+                                "waila.fluid",
+                                tank.fluid.getFluid().getName(),
+                                tank.fluid.getLocalizedName(),
+                                tank.fluid.amount + "",
+                                tank.capacity + ""));
             }
         }
     }
