@@ -45,7 +45,7 @@ public class PluginIFluidHandler extends PluginBase {
                         SpecialChars.getRenderString(
                                 "waila.fluid",
                                 tank.fluid.getFluid().getName(),
-                                tank.fluid.getLocalizedName(),
+                                tank.fluid.getLocalizedName().replace(',', '\u0080'),
                                 tank.fluid.amount + "",
                                 tank.capacity + ""));
             }
