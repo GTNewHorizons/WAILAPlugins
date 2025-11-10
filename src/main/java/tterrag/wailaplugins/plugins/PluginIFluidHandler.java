@@ -37,16 +37,16 @@ public class PluginIFluidHandler extends PluginBase {
         addTankTooltip(currenttip, infos);
     }
 
-    @SuppressWarnings("unchecked")
     public static void addTankTooltip(List<String> currenttip, FluidTankInfo... tanks) {
         for (FluidTankInfo tank : tanks) {
-            if (tank != null && tank.fluid != null) {
+            if (tank != null) {
+                final boolean isEmpty = tank.fluid == null;
                 currenttip.add(
                         SpecialChars.getRenderString(
                                 "waila.fluid",
-                                tank.fluid.getFluid().getName(),
-                                tank.fluid.getLocalizedName(),
-                                tank.fluid.amount + "",
+                                isEmpty ? "EMPTYFLUID" : tank.fluid.getFluid().getName(),
+                                isEmpty ? "EMPTYFLUID" : tank.fluid.getLocalizedName(),
+                                (isEmpty ? 0 : tank.fluid.amount) + "",
                                 tank.capacity + ""));
             }
         }
