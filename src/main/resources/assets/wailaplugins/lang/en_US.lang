@@ -6,6 +6,7 @@ wp.hud.msg.no=No
 wailaplugins.config.title=WAILAPlugins Configuration
 wailaplugins.config.section.blood_magic=Blood Magic Settings
 wailaplugins.config.section.railcraft=Railcraft Settings
+wailaplugins.config.section.fluid=Fluid Tank Settings
 wailaplugins.config.section.plugins=Global Plugin Settings
 
 ## Blood Magic ##
@@ -163,3 +164,14 @@ wp.config.ResourcefulCrops.showOutputItem=Shard -> Output Hover
 
 wp.hud.msg.augments.hidden=Shift for augment info
 wp.hud.msg.augments.shown=Augment info:
+
+## IFluidHandler ##
+
+wp.hud.msg.moreTanksContaining=... and %d more, containing %s
+wp.hud.msg.moreTanksAllEmpty=... and %d more, all empty
+wp.hud.msg.fluidTanksContaining=%d fluid tanks, containing %s
+wp.hud.msg.fluidTanksAllEmpty=%d fluid tanks, all empty
+wp.hud.msg.fluidTankContaining=%d fluid tank, containing %s
+wp.hud.msg.fluidTankAllEmpty=%d fluid tank, all empty
+wp.hud.msg.tankContents=%d mB %s
+wp.hud.msg.listAnd=and

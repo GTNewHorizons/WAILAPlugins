@@ -1,6 +1,10 @@
 package tterrag.wailaplugins.plugins;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +23,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaRegistrar;
 import mcp.mobius.waila.api.SpecialChars;
 import tterrag.wailaplugins.api.Plugin;
+import tterrag.wailaplugins.config.WPConfigHandler;
 
 @Plugin(name = "IFluidHandler")
 public class PluginIFluidHandler extends PluginBase {
@@ -34,7 +39,72 @@ public class PluginIFluidHandler extends PluginBase {
     @Override
     protected void getBody(ItemStack stack, List<String> currenttip, IWailaDataAccessor accessor) {
         FluidTankInfo[] infos = readFluidInfosFromNBT(accessor.getNBTData());
-        addTankTooltip(currenttip, infos);
+        final int max = WPConfigHandler.maxFluidTanks;
+
+        if (max < 0 || infos.length <= max) {
+            addTankTooltip(currenttip, infos);
+            return;
+        }
+
+        // too many tanks. here we summarize the tanks into one or two lines so it does not overflow the screen
+        FluidTankInfo[] hidden = Arrays.copyOfRange(infos, max, infos.length);
+        String contents = summarizeContents(hidden);
+
+        if (max == 0) {
+            final boolean single = infos.length == 1;
+            if (contents == null) {
+                currenttip.add(lang.localize(single ? "fluidTankAllEmpty" : "fluidTanksAllEmpty", infos.length));
+            } else {
+                currenttip.add(
+                        lang.localize(single ? "fluidTankContaining" : "fluidTanksContaining", infos.length, contents));
+            }
+        } else {
+            addTankTooltip(currenttip, Arrays.copyOf(infos, max));
+            if (contents == null) {
+                currenttip.add(lang.localize("moreTanksAllEmpty", hidden.length));
+            } else {
+                currenttip.add(lang.localize("moreTanksContaining", hidden.length, contents));
+            }
+        }
+    }
+
+    /**
+     * Aggregates the hidden tanks that actually hold fluid, preserving first-seen tank order.
+     *
+     * @return the fluid content list as a human-readable string, or null if every hidden tank is empty
+     */
+    private static String summarizeContents(FluidTankInfo[] tanks) {
+        // key = fluid registry name; LinkedHashMap keeps tank order stable between ticks
+        Map<String, Integer> amounts = new LinkedHashMap<>();
+        Map<String, String> names = new LinkedHashMap<>();
+        for (FluidTankInfo tank : tanks) {
+            // empty or zero sized tanks count towards the limit but have nothing to report
+            if (tank == null || tank.fluid == null || tank.fluid.amount <= 0) {
+                continue;
+            }
+            String key = tank.fluid.getFluid().getName();
+            amounts.merge(key, tank.fluid.amount, Integer::sum);
+            if (!names.containsKey(key)) {
+                names.put(key, tank.fluid.getLocalizedName());
+            }
+        }
+        if (amounts.isEmpty()) {
+            return null;
+        }
+
+        List<String> parts = new ArrayList<>(amounts.size());
+        for (Map.Entry<String, Integer> entry : amounts.entrySet()) {
+            parts.add(lang.localize("tankContents", entry.getValue(), names.get(entry.getKey())));
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < parts.size(); i++) {
+            if (i > 0) {
+                sb.append(i == parts.size() - 1 ? " " + lang.localize("listAnd") + " " : ", ");
+            }
+            sb.append(parts.get(i));
+        }
+        return sb.toString();
     }
 
     public static void addTankTooltip(List<String> currenttip, FluidTankInfo... tanks) {
