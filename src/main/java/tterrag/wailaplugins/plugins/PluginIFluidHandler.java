@@ -69,7 +69,9 @@ public class PluginIFluidHandler extends PluginBase {
     }
 
     /**
-     * Aggregates the hidden tanks that actually hold fluid, preserving first-seen tank order.
+     * Aggregates the hidden tanks that actually hold fluid, preserving first-seen tank order. The number of fluid types
+     * listed is capped by {@link WPConfigHandler#maxFluidInSummary}; if that is 0 only the type count is reported, and
+     * if it is negative every type is listed.
      *
      * @return the fluid content list as a human-readable string, or null if every hidden tank is empty
      */
@@ -92,9 +94,22 @@ public class PluginIFluidHandler extends PluginBase {
             return null;
         }
 
+        final int maxTypes = WPConfigHandler.maxFluidInSummary;
+        if (maxTypes == 0) {
+            return lang.localize(amounts.size() == 1 ? "tankType" : "tankTypes", amounts.size());
+        }
+
         List<String> parts = new ArrayList<>(amounts.size());
         for (Map.Entry<String, Integer> entry : amounts.entrySet()) {
+            if (maxTypes > 0 && parts.size() >= maxTypes) {
+                break;
+            }
             parts.add(lang.localize("tankContents", entry.getValue(), names.get(entry.getKey())));
+        }
+
+        final int hiddenTypes = amounts.size() - parts.size();
+        if (hiddenTypes > 0) {
+            parts.add(lang.localize(hiddenTypes == 1 ? "tankContentsMoreOne" : "tankContentsMore", hiddenTypes));
         }
 
         StringBuilder sb = new StringBuilder();

@@ -53,6 +53,15 @@ public class WPConfigHandler extends AbstractConfigHandler {
             "Useful for blocks that could expose many tanks, such as EnderIO fluid conduits." })
     public static int maxFluidTanks = 5;
 
+    @Config(SECTION_FLUID)
+    @NoSync
+    @Range(min = -1)
+    @Comment({
+            "Maximum number of fluid types to list in the summary line shown when there are more tanks than maxFluidTanks.",
+            "-1 - No limit", "0 - Do not list any fluid types at all, show only how many types there are",
+            "No effect if maxFluidTanks is set to -1" })
+    public static int maxFluidInSummary = 2;
+
     @Override
     protected void init() {
         addSection(SECTION_BM);
