@@ -22,6 +22,7 @@ import com.enderio.core.common.util.BlockCoord;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaRegistrar;
 import mcp.mobius.waila.api.SpecialChars;
+import mcp.mobius.waila.utils.NumberFormatter;
 import tterrag.wailaplugins.api.Plugin;
 import tterrag.wailaplugins.config.WPConfigHandler;
 
@@ -104,7 +105,8 @@ public class PluginIFluidHandler extends PluginBase {
             if (maxTypes > 0 && parts.size() >= maxTypes) {
                 break;
             }
-            parts.add(lang.localize("tankContents", entry.getValue(), names.get(entry.getKey())));
+            parts.add(
+                    lang.localize("tankContents", NumberFormatter.format(entry.getValue()), names.get(entry.getKey())));
         }
 
         final int hiddenTypes = amounts.size() - parts.size();
