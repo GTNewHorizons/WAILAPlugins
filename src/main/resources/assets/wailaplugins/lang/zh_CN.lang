@@ -6,6 +6,7 @@ wp.hud.msg.no=否
 wailaplugins.config.title=WAILA插件 配置
 wailaplugins.config.section.blood_magic=血魔法设置
 wailaplugins.config.section.railcraft=铁路设置
+wailaplugins.config.section.fluid=流体储罐设置
 wailaplugins.config.section.plugins=全局设置
 
 ## Blood Magic ##
@@ -150,3 +151,18 @@ wp.config.ResourcefulCrops.showOutputItem=Shard -> Output Hover
 
 wp.hud.msg.augments.hidden=Shift for augment info
 wp.hud.msg.augments.shown=Augment info:
+
+## IFluidHandler ##
+
+wp.hud.msg.moreTanksContaining=... 还有 %d 个储罐，包含 %s
+wp.hud.msg.moreTanksAllEmpty=... 还有 %d 个储罐，全部为空
+wp.hud.msg.fluidTanksContaining=%d 个流体储罐，包含 %s
+wp.hud.msg.fluidTanksAllEmpty=%d 个流体储罐，全部为空
+wp.hud.msg.fluidTankContaining=%d 个流体储罐，包含 %s
+wp.hud.msg.fluidTankAllEmpty=%d 个流体储罐，全部为空
+wp.hud.msg.tankContents=%dL %s
+wp.hud.msg.tankType=%d 种流体
+wp.hud.msg.tankTypes=%d 种流体
+wp.hud.msg.tankContentsMore=%d 种其他流体
+wp.hud.msg.tankContentsMoreOne=%d 种其他流体
+wp.hud.msg.listAnd=和

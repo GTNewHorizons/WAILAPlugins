@@ -6,6 +6,7 @@ import com.enderio.core.common.config.AbstractConfigHandler;
 import com.enderio.core.common.config.ConfigProcessor;
 import com.enderio.core.common.config.annot.Comment;
 import com.enderio.core.common.config.annot.Config;
+import com.enderio.core.common.config.annot.NoSync;
 import com.enderio.core.common.config.annot.Range;
 
 import tterrag.wailaplugins.WailaPlugins;
@@ -20,6 +21,7 @@ public class WPConfigHandler extends AbstractConfigHandler {
 
     public static final String SECTION_BM = "blood_magic";
     public static final String SECTION_RC = "railcraft";
+    public static final String SECTION_FLUID = "fluid";
 
     public static final String SECTION_PLUGINS = "plugins";
 
@@ -42,10 +44,29 @@ public class WPConfigHandler extends AbstractConfigHandler {
     @Comment("Does the player need the Electric Meter in hand to see info about RC charge")
     public static boolean meterInHand = true;
 
+    // fluid
+    @Config(SECTION_FLUID)
+    @NoSync
+    @Range(min = -1)
+    @Comment({ "Maximum number of fluid tanks to display for a block that exposes an IFluidHandler.", "-1 - No limit",
+            "0 - Do not display any individual tanks, show only the total count",
+            "Useful for blocks that could expose many tanks, such as EnderIO fluid conduits." })
+    public static int maxFluidTanks = 5;
+
+    @Config(SECTION_FLUID)
+    @NoSync
+    @Range(min = -1)
+    @Comment({
+            "Maximum number of fluid types to list in the summary line shown when there are more tanks than maxFluidTanks.",
+            "-1 - No limit", "0 - Do not list any fluid types at all, show only how many types there are",
+            "No effect if maxFluidTanks is set to -1" })
+    public static int maxFluidInSummary = 2;
+
     @Override
     protected void init() {
         addSection(SECTION_BM);
         addSection(SECTION_RC);
+        addSection(SECTION_FLUID);
         addSection(SECTION_PLUGINS);
 
         new ConfigProcessor(getClass(), this).process(true);
